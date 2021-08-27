@@ -111,7 +111,7 @@ class TransformerSeq2SeqDecoder(nn.Module):
         self.input_fc = nn.Linear(self.embed.embedding_dim, d_model)
         self.layer_stacks = nn.ModuleList([TransformerSeq2SeqDecoderLayer(d_model, n_head, dim_ff, dropout, layer_idx,
                                                                           fix_kp_num_len, max_kp_num)
-                                           for layer_idx in range(6)])
+                                           for layer_idx in range(num_layers)])
         self.embed_scale = math.sqrt(d_model)
         self.layer_norm = nn.LayerNorm(d_model)
 
@@ -135,7 +135,7 @@ class TransformerSeq2SeqDecoder(nn.Module):
     def from_opt(cls, opt, embed, pos_embed):
         return cls(embed,
                    pos_embed,
-                   num_layers=opt.enc_layers,
+                   num_layers=opt.dec_layers,
                    d_model=opt.d_model,
                    n_head=opt.n_head,
                    dim_ff=opt.dim_ff,
